@@ -26,8 +26,11 @@ def create_app():
     bootstrap.init_app(app)
     moment.init_app(app)
     Config.init_app(app)
-    from .main import main
-    app.register_blueprint(main)
+    from .main import main as main_blueprint
+    app.register_blueprint(main_blueprint)
+
+    from .auth import auth as auth_blueprint
+    app.register_blueprint(auth_blueprint,url_prefix="/auth")
 
 
     return app

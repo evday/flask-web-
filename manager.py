@@ -5,20 +5,14 @@ from flask import render_template
 from flask_script import Manager
 from app import create_app,db
 from flask_migrate import MigrateCommand,Migrate
+from app.models import User,Role
 app = create_app()
 manage = Manager(app)
 migrate = Migrate(app,db)
 manage.add_command('db',MigrateCommand)
+@app.shell_context_processor
+def make_shell_context():
+    return dict(db=db,User=User,Role = Role)
 
-
-
-@app.errorhandler (404)
-def page_not_found (e):
-    return render_template ('404.html'),404
-
-
-@app.errorhandler (500)
-def internal_server_error (e):
-    return render_template ('500.html'),500
 if __name__ == '__main__':
     manage.run()
